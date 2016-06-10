@@ -1,3 +1,14 @@
+/*
+ * CSS values in this file are specific and
+ * designed to match the CSS on external sites,
+ * such as Google and Facebook. Therefore there
+ * will be exceptions to our CSS guidelines here
+ * but please do not "update" this file to
+ * conform.
+ *
+ * @blame: dmsnell
+*/
+
 .seo-search-preview {
 	margin-top: 1.5em;
 	margin-bottom: 1.5em;
@@ -49,4 +60,114 @@
 	font-size: 13px;
 	line-height: 1.4;
 	max-width: 616px;
+}
+
+.facebook-opengraph-preview {
+	border: 1px solid;
+	border-color: #e9ebee #e9ebee #d1d1d1;
+	width: 527px;
+}
+
+.facebook-opengraph-preview__image {
+
+}
+
+.facebook-opengraph-preview__body {
+	margin: 10px 12px;
+}
+
+.facebook-opengraph-preview__title {
+	color: #1d2129;
+	font-family: Georgia, serif;
+	font-size: 18px;
+	font-weight: 500;
+	line-height: 22px;
+	max-height: 100px;
+	overflow: hidden;
+	transition: color 0.1s ease-in-out;
+	word-wrap: break-word;
+}
+
+.facebook-opengraph-preview__description {
+	color: #4b4f56;
+	font-family: helvetica, arial, sans-serif;
+	font-size: 12px;
+	line-height: 16px;
+	max-height: 80px;
+	overflow: hidden;
+	word-wrap: break-word;
+}
+
+.facebook-opengraph-preview__url {
+	color: #90949c;
+	font-family: helvetica, arial, sans-serif;
+	font-size: 11px;
+	line-height: 11px;
+	text-transform: uppercase;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.facebook-opengraph-preview__article
+.facebook-opengraph-preview__image img {
+	height: auto;
+	width: 100%;
+}
+
+.facebook-opengraph-preview__article
+.facebook-opengraph-preview__body {
+	height: auto;
+	max-height: 100px;
+}
+
+.facebook-opengraph-preview__article
+.facebook-opengraph-preview__title {
+	margin-bottom: 12px;
+}
+
+.facebook-opengraph-preview__article
+.facebook-opengraph-preview__description {
+
+}
+
+.facebook-opengraph-preview__article
+.facebook-opengraph-preview__url {
+	margin-top: 12px;
+}
+
+.facebook-opengraph-preview__website
+.facebook-opengraph-preview__image {
+	float: left;
+	height: 100%;
+	width: 158px;
+
+	& img {
+		height: auto;
+		width: 100%;
+	}
+}
+
+.facebook-opengraph-preview__website
+.facebook-opengraph-preview__body {
+	height: 138px;
+	padding-left: 160px;
+	position: relative;
+}
+
+.facebook-opengraph-preview__website
+.facebook-opengraph-preview__title {
+	margin-bottom: 5px;
+	max-height: 110px;
+}
+
+.facebook-opengraph-preview__website
+.facebook-opengraph-preview__description {
+
+}
+
+.facebook-opengraph-preview__website
+.facebook-opengraph-preview__url {
+	position: absolute;
+	bottom: 0;
 }
