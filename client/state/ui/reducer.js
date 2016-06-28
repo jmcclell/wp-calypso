@@ -15,7 +15,6 @@ import {
 } from 'state/action-types';
 import { createReducer } from 'state/utils';
 import editor from './editor/reducer';
-import firstView from './first-view/reducer';
 import guidedTour from './guided-tours/reducer';
 import reader from './reader/reducer';
 import olark from './olark/reducer';
@@ -94,7 +93,6 @@ const reducer = combineReducers( {
 	isPreviewShowing,
 	selectedSiteId,
 	recentlySelectedSiteIds,
-	firstView,
 	guidedTour,
 	editor,
 	reader,
