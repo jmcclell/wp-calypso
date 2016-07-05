@@ -26,6 +26,8 @@ import { DEFAULT_POST_QUERY } from './constants';
 import firstPassCanonicalImage from 'lib/post-normalizer/rule-first-pass-canonical-image';
 import decodeEntities from 'lib/post-normalizer/rule-decode-entities';
 import stripHtml from 'lib/post-normalizer/rule-strip-html';
+import { getSite } from 'state/sites/selectors';
+import addQueryArgs from 'lib/route/add-query-args';
 
 /**
  * Returns a post object by its global ID.
@@ -312,4 +314,53 @@ export function getEditedPost( state, siteId, postId ) {
  */
 export function getEditedPostValue( state, siteId, postId, field ) {
 	return get( getEditedPost( state, siteId, postId ), field );
+}
+
+/**
+ * Returns the most reliable preview URL for the post by site ID, post ID pair,
+ * or null if a preview URL cannot be determined.
+ *
+ * @param  {Object}  state  Global state tree
+ * @param  {Number}  siteId Site ID
+ * @param  {Number}  postId Post ID
+ * @return {?String}        Post preview URL
+ */
+export function getPostPreviewUrl( state, siteId, postId ) {
+	const post = getSitePost( state, siteId, postId );
+	if ( ! post ) {
+		return null;
+	}
+
+	const { URL: url, status } = post;
+	if ( ! url || status === 'trash' ) {
+		return null;
+	}
+
+	let previewUrl = post.preview_URL;
+	if ( ! previewUrl ) {
+		previewUrl = url;
+
+		if ( 'publish' !== status ) {
+			previewUrl = addQueryArgs( {
+				preview: true
+			}, previewUrl );
+		}
+	}
+
+	const site = getSite( state, siteId );
+	if ( ! site || ! site.options ) {
+		return previewUrl;
+	}
+
+	if ( site.options.is_mapped_domain ) {
+		previewUrl = previewUrl.replace( site.URL, site.options.unmapped_url );
+	}
+
+	if ( site.options.frame_nonce ) {
+		previewUrl = addQueryArgs( {
+			'frame-nonce': site.options.frame_nonce
+		}, previewUrl );
+	}
+
+	return previewUrl;
 }
