@@ -168,5 +168,3 @@ export default createReducer( initialState, {
 		error: action.error
 	} )
 } );
-
-export default combineReducers( { items } );

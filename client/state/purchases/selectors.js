@@ -6,6 +6,10 @@
  */
 export const getPurchases = state => state.purchases.data;
 
+export const getUserPurchases = ( state, userId ) => (
+	state.purchases.hasLoadedUserPurchasesFromServer && getPurchases( state ).filter( purchase => purchase.userId === userId )
+);
+
 /**
  * Returns a Purchase object from the state using its id
  * @param  {Object} state       global state
@@ -16,5 +20,6 @@ export const getByPurchaseId = ( state, purchaseId ) => (
 	getPurchases( state ).filter( purchase => purchase.id === purchaseId ).shift()
 );
 
+export const hasLoadedUserPurchasesFromServer = state => state.purchases.hasLoadedUserPurchasesFromServer;
 export const isFetchingUserPurchases = state => state.purchases.isFetchingUserPurchases;
 export const isFetchingSitePurchases = state => state.purchases.isFetchingSitePurchases;
