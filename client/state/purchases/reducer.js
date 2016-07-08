@@ -1,6 +1,7 @@
 /**
  * External Dependencies
  */
+import { combineReducers } from 'redux';
 import find from 'lodash/find';
 import matches from 'lodash/matches';
 
@@ -167,3 +168,5 @@ export default createReducer( initialState, {
 		error: action.error
 	} )
 } );
+
+export default combineReducers( { items } );
