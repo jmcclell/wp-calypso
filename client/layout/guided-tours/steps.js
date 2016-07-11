@@ -130,6 +130,7 @@ class ActionStep extends Component {
 		const target = targetForSlug( targetSlug );
 
 		if ( ! continueIf && onNext && target && target.addEventListener ) {
+			console.log( 'attaching click target to', target );
 			target.addEventListener( 'click', onNext );
 		}
 	}

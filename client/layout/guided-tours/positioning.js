@@ -59,6 +59,7 @@ export const posToCss = ( { x, y } ) => ( {
 } );
 
 export function targetForSlug( targetSlug ) {
+	console.log( 'targetSlug', targetSlug );
 	return query( '[data-tip-target="' + targetSlug + '"]' )[ 0 ] || query( targetSlug )[ 0 ];
 }
 
