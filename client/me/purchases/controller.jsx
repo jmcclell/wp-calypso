@@ -246,8 +246,6 @@ export default {
 			<ManagePurchase
 				purchaseId={ parseInt( context.params.purchaseId, 10 ) }
 				destinationType={ context.params.destinationType }
-				hasLoadedSites={ sites.fetched }
-				selectedSite={ sites.getSelectedSite() }
 				user={ user.get() }
 			/>
 		);
