@@ -164,7 +164,7 @@ function get( tour ) {
 				placement: 'below',
 				target: 'theme-sheet-preview',
 				showInContext: state => getSectionName( state ) === 'theme',
-				arrow: 'left-top',
+				arrow: 'top-left',
 				next: 'close-preview',
 			},
 			'close-preview': {
