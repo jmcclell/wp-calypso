@@ -42,14 +42,18 @@ import { isDomainRegistration } from 'lib/products-values';
 import Main from 'components/main';
 import Notice from 'components/notice';
 import NoticeAction from 'components/notice/notice-action';
-import paths from '../paths';
 import PaymentLogo from 'components/payment-logo';
 import ProductLink from 'me/purchases/product-link';
+import QueryUserPurchases from 'components/data/query-user-purchases';
 import RemovePurchase from '../remove-purchase';
+import VerticalNavItem from 'components/vertical-nav/item';
+import paths from '../paths';
 import support from 'lib/url/support';
 import titles from 'me/purchases/titles';
-import VerticalNavItem from 'components/vertical-nav/item';
+import userFactory from 'lib/user';
 import * as upgradesActions from 'lib/upgrades/actions';
+
+const user = userFactory();
 
 function canEditPaymentDetails( purchase ) {
 	return config.isEnabled( 'upgrades/credit-cards' ) && ! isExpired( purchase ) && ! isOneTimePurchase( purchase ) && ! isIncludedWithPlan( purchase );
@@ -637,6 +641,7 @@ const ManagePurchase = React.createClass( {
 
 		return (
 			<span>
+				<QueryUserPurchases userId={ user.get().ID } />
 				<Main className="manage-purchase">
 					<HeaderCake onClick={ goToList }>
 						{ titles.managePurchase }
