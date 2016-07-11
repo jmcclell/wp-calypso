@@ -2,14 +2,37 @@
  * External dependencies
  */
 import { translate } from 'i18n-calypso';
+import { truncate } from 'lodash';
 
 /**
  * Internal dependencies
  */
-import { successNotice } from 'state/notices/actions';
-import { POST_SAVE_SUCCESS } from 'state/action-types';
+import { successNotice, errorNotice } from 'state/notices/actions';
+import { getSitePost } from 'state/posts/selectors';
+import {
+	POST_DELETE_FAILURE,
+	POST_DELETE_SUCCESS,
+	POST_SAVE_SUCCESS
+} from 'state/action-types';
 
 export const OBSERVERS = {
+	[ POST_DELETE_FAILURE ]: ( action, dispatch, getState ) => {
+		const post = getSitePost( getState(), action.siteId, action.postId );
+
+		let message;
+		if ( post ) {
+			message = translate( 'An error occurred while deleting "%s"', {
+				args: [ truncate( post.title, { length: 24 } ) ]
+			} );
+		} else {
+			message = translate( 'An error occurred while deleting the post' );
+		}
+
+		dispatch( errorNotice( message ) );
+	},
+	[ POST_DELETE_SUCCESS ]: ( action, dispatch ) => {
+		dispatch( successNotice( translate( 'Post successfully deleted' ) ) );
+	},
 	[ POST_SAVE_SUCCESS ]: ( action, dispatch ) => {
 		let text;
 		switch ( action.post.status ) {

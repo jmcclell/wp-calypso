@@ -11,13 +11,25 @@ import { noop } from 'lodash';
 import noticesMiddleware, { OBSERVERS } from '../middleware';
 import { useSandbox } from 'test/helpers/use-sinon';
 import { successNotice } from 'state/notices/actions';
-import { NOTICE_CREATE, POST_SAVE_SUCCESS } from 'state/action-types';
+import {
+	NOTICE_CREATE,
+	POST_DELETE_FAILURE,
+	POST_DELETE_SUCCESS,
+	POST_SAVE_SUCCESS
+} from 'state/action-types';
 
 describe( 'middleware', () => {
-	let store;
+	let state = null,
+		store;
+
 	useSandbox( ( sandbox ) => {
-		store = createStore( () => 'Hello' );
+		store = createStore( noop );
+		sandbox.stub( store, 'getState', () => state );
 		sandbox.spy( store, 'dispatch' );
+	} );
+
+	beforeEach( () => {
+		state = null;
 	} );
 
 	describe( 'noticesMiddleware()', () => {
@@ -34,6 +46,7 @@ describe( 'middleware', () => {
 		} );
 
 		it( 'should trigger the observer corresponding to the dispatched action type', () => {
+			state = 'Hello';
 			noticesMiddleware( store )( noop )( { type: 'DUMMY_TYPE', target: 'World' } );
 
 			expect( store.dispatch ).to.have.been.calledWithMatch( {
@@ -46,6 +59,75 @@ describe( 'middleware', () => {
 	} );
 
 	describe( 'OBSERVERS', () => {
+		context( '.POST_DELETE_FAILURE', () => {
+			it( 'should dispatch error notice with truncated title if known', () => {
+				state = {
+					posts: {
+						items: {
+							'3d097cb7c5473c169bba0eb8e3c6cb64': {
+								ID: 841,
+								site_ID: 2916284,
+								global_ID: '3d097cb7c5473c169bba0eb8e3c6cb64',
+								title: 'Hello World, This Should Be Truncated'
+							}
+						}
+					}
+				};
+
+				noticesMiddleware( store )( noop )( {
+					type: POST_DELETE_FAILURE,
+					siteId: 2916284,
+					postId: 841
+				} );
+
+				expect( store.dispatch ).to.have.been.calledWithMatch( {
+					type: NOTICE_CREATE,
+					notice: {
+						status: 'is-error',
+						text: 'An error occurred while deleting "Hello World, This Sho..."'
+					}
+				} );
+			} );
+
+			it( 'should dispatch error notice with unknown title', () => {
+				state = {
+					posts: {
+						items: {}
+					}
+				};
+
+				noticesMiddleware( store )( noop )( {
+					type: POST_DELETE_FAILURE,
+					siteId: 2916284,
+					postId: 841
+				} );
+
+				expect( store.dispatch ).to.have.been.calledWithMatch( {
+					type: NOTICE_CREATE,
+					notice: {
+						status: 'is-error',
+						text: 'An error occurred while deleting the post'
+					}
+				} );
+			} );
+		} );
+
+		context( '.POST_DELETE_SUCCESS', () => {
+			it( 'should dispatch success notice', () => {
+				noticesMiddleware( store )( noop )( {
+					type: POST_DELETE_SUCCESS
+				} );
+
+				expect( store.dispatch ).to.have.been.calledWithMatch( {
+					type: NOTICE_CREATE,
+					notice: {
+						status: 'is-success',
+						text: 'Post successfully deleted'
+					}
+				} );
+			} );
+		} );
+
 		context( '.POST_SAVE_SUCCESS', () => {
 			it( 'should not dispatch if status has no corresponding text', () => {
 				noticesMiddleware( store )( noop )( {
