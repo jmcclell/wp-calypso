@@ -125,7 +125,6 @@ module.exports = React.createClass( {
 
 		examples = (
 			<Card className="example-domain-suggestions">
-				<div className="example-domain-suggestions__illustration" />
 				<div className="example-domain-suggestions__information">
 					<h2 className="example-domain-suggestions__header">
 						{ this.translate( 'What are my options?' ) }
