@@ -43,7 +43,7 @@ function goToManagePurchase( props ) {
 }
 
 function isDataLoading( props ) {
-	return ! props.hasLoadedSites || ! props.selectedPurchase.hasLoadedUserPurchasesFromServer;
+	return ! props.hasLoadedSites || ! props.hasLoadedUserPurchasesFromServer;
 }
 
 function recordPageView( trackingSlug, props, nextProps = null ) {
@@ -52,7 +52,7 @@ function recordPageView( trackingSlug, props, nextProps = null ) {
 	}
 
 	if ( nextProps &&
-		( props.selectedPurchase.hasLoadedUserPurchasesFromServer || ! nextProps.selectedPurchase.hasLoadedUserPurchasesFromServer ) ) {
+		( props.hasLoadedUserPurchasesFromServer || ! nextProps.hasLoadedUserPurchasesFromServer ) ) {
 		// only record the page view the first time the purchase loads from the server
 		return null;
 	}
@@ -77,4 +77,4 @@ export {
 	goToManagePurchase,
 	isDataLoading,
 	recordPageView
-}
+};
