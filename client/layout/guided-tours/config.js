@@ -11,6 +11,7 @@ import i18n from 'i18n-calypso';
  */
 import { getSelectedSite, getSectionName, isPreviewShowing } from 'state/ui/selectors';
 import { isFetchingNextPage, getQueryParams, getThemesList } from 'state/themes/themes-list/selectors';
+import { isMobile } from 'lib/viewport';
 
 function get( tour ) {
 	const tours = {
@@ -125,17 +126,35 @@ function get( tour ) {
 				text: i18n.translate( 'Find a theme thats good for you.' ),
 				type: 'FirstStep',
 				placement: 'right',
+				next: 'mobileSearch',
+			},
+			mobileSearch: {
+				text: i18n.translate( 'Click the search button to search for themes' ),
+				type: 'ActionStep',
+				target: '.themes__search-card .search-open__icon',
+				placement: 'below',
+				showInContext: () => isMobile(),
+				arrow: 'top-left',
 				next: 'search',
 			},
 			search: {
 				text: i18n.translate( 'You can search for themes here, try a few terms, find a theme you like' ),
 				type: 'ActionStep',
-				target: 'themes-search-card',
+				target: '.themes__search-card .search-open__icon',
 				placement: 'below',
 				continueIf: state => {
 					const params = getQueryParams( state );
 					return params && params.search && params.search.length && ! isFetchingNextPage( state ) && getThemesList( state ).length > 0;
 				},
+				arrow: 'top-left',
+				next: 'mobileFilter',
+			},
+			mobileFilter: {
+				text: i18n.translate( 'Close the search' ),
+				type: 'ActionStep',
+				target: '.themes__search-card .search-close__icon',
+				placement: 'below',
+				showInContext: () => isMobile(),
 				arrow: 'top-left',
 				next: 'filter',
 			},
