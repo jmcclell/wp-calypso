@@ -248,13 +248,6 @@ const allPaidPlans = [
 	PLAN_BUSINESS
 ];
 
-const allPlans = [
-	PLAN_FREE,
-	PLAN_PERSONAL,
-	PLAN_PREMIUM,
-	PLAN_BUSINESS
-];
-
 export const featuresList = {
 	[ FEATURE_GOOGLE_ANALYTICS ]: {
 		getTitle: () => i18n.translate( 'Google Analytics Integration' ),
@@ -320,8 +313,8 @@ export const featuresList = {
 
 	[ FEATURE_NO_BRANDING ]: {
 		getTitle: () => i18n.translate( 'Remove WordPress.com Branding' ),
-		getDescription: () => i18n.translate( 'Give your site a more professional look by removing the' +
-			' "Powered by WordPress.com" branding in the footer of your website.' ),
+		getDescription: () => i18n.translate( "Keep the focus on your site's brand by removing the WordPress.com" +
+			' footer branding.' ),
 		getStoreSlug: () => 'no-adverts/no-adverts.php',
 		plans: [ PLAN_BUSINESS ]
 	},
