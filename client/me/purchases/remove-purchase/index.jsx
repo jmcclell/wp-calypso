@@ -35,7 +35,8 @@ const debug = debugFactory( 'calypso:purchases:survey' );
 
 const RemovePurchase = React.createClass( {
 	propTypes: {
-		selectedPurchase: React.PropTypes.object.isRequired,
+		hasLoadedUserPurchasesFromServer: React.PropTypes.bool.isRequired,
+		selectedPurchase: React.PropTypes.object,
 		selectedSite: React.PropTypes.oneOfType( [
 			React.PropTypes.object,
 			React.PropTypes.bool,
