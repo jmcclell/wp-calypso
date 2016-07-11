@@ -24,7 +24,6 @@ import ManagePurchaseData from 'components/data/purchases/manage-purchase';
 import NoSitesMessage from 'components/empty-content/no-sites-message';
 import notices from 'notices';
 import paths from './paths';
-import PurchasesData from 'components/data/purchases';
 import PurchasesHeader from './list/header';
 import PurchasesList from './list';
 import { renderWithReduxStore } from 'lib/react-helpers';
@@ -227,11 +226,13 @@ export default {
 
 		renderPage(
 			context,
-			<ManagePurchaseData
-				component={ ManagePurchase }
-				purchaseId={ context.params.purchaseId }
+			<ManagePurchase
+				purchaseId={ parseInt( context.params.purchaseId, 10 ) }
 				destinationType={ context.params.destinationType }
-				sites={ sites } />
+				hasLoadedSites={ sites.fetched }
+				selectedSite={ sites.getSelectedSite() }
+				user={ user.get() }
+			/>
 		);
 	},
 

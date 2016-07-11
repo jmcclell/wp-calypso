@@ -2,6 +2,7 @@
  * External Dependencies
  */
 import classNames from 'classnames';
+import { connect } from 'react-redux';
 import page from 'page';
 import React from 'react';
 
@@ -35,6 +36,7 @@ import {
 	showCreditCardExpiringWarning
 } from 'lib/purchases';
 import { getPurchase, getSelectedSite, goToList, recordPageView } from '../utils';
+import { getByPurchaseId, hasLoadedUserPurchasesFromServer } from 'state/purchases/selectors';
 import HeaderCake from 'components/header-cake';
 import { isDomainRegistration } from 'lib/products-values';
 import Main from 'components/main';
@@ -61,14 +63,15 @@ function canEditPaymentDetails( purchase ) {
  * @return {boolean} Whether or not the data is loading
  */
 function isDataLoading( props ) {
-	return ! props.hasLoadedSites || ! props.selectedPurchase.hasLoadedUserPurchasesFromServer;
+	return ! props.hasLoadedSites || ! props.hasLoadedUserPurchasesFromServer;
 }
 
 const ManagePurchase = React.createClass( {
 	propTypes: {
 		destinationType: React.PropTypes.string,
 		hasLoadedSites: React.PropTypes.bool.isRequired,
-		selectedPurchase: React.PropTypes.object.isRequired,
+		hasLoadedUserPurchasesFromServer: React.PropTypes.bool.isRequired,
+		selectedPurchase: React.PropTypes.object,
 		selectedSite: React.PropTypes.oneOfType( [
 			React.PropTypes.object,
 			React.PropTypes.bool,
@@ -645,4 +648,9 @@ const ManagePurchase = React.createClass( {
 	}
 } );
 
-export default ManagePurchase;
+export default connect(
+	( state, props ) => ( {
+		hasLoadedUserPurchasesFromServer: hasLoadedUserPurchasesFromServer( state ),
+		selectedPurchase: getByPurchaseId( state, props.purchaseId )
+	} )
+)( ManagePurchase );

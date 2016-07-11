@@ -10,7 +10,7 @@ import analytics from 'lib/analytics';
 import paths from './paths';
 
 function getPurchase( props ) {
-	return props.selectedPurchase.data;
+	return props.selectedPurchase;
 }
 
 function getSelectedSite( props ) {
