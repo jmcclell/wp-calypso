@@ -26,7 +26,9 @@ import notices from 'notices';
 import paths from './paths';
 import PurchasesHeader from './list/header';
 import PurchasesList from './list';
+import { receiveSite } from 'state/sites/actions';
 import { renderWithReduxStore } from 'lib/react-helpers';
+import { setSelectedSiteId } from 'state/ui/actions';
 import sitesFactory from 'lib/sites-list';
 import supportPaths from 'lib/url/support';
 import titleActions from 'lib/screen-title/actions';
@@ -60,6 +62,21 @@ function setTitle( ...title ) {
 		concatTitle( titles.purchases, ...title )
 	);
 }
+
+const setSelectedSite = ( site, dispatch ) => {
+	const setSelectedSiteCalls = () => {
+		sites.setSelectedSite( site );
+		const selectedSite = sites.getSelectedSite();
+		dispatch( receiveSite( selectedSite ) );
+		dispatch( setSelectedSiteId( selectedSite.ID ) );
+	};
+
+	if ( sites.select( site ) ) {
+		setSelectedSiteCalls();
+	} else {
+		sites.once( 'change', setSelectedSiteCalls );
+	}
+};
 
 export default {
 	cancelPrivateRegistration( context ) {
@@ -222,7 +239,7 @@ export default {
 			'Manage Purchase'
 		);
 
-		sites.setSelectedSite( context.params.site );
+		setSelectedSite( context.params.site, context.store.dispatch );
 
 		renderPage(
 			context,
