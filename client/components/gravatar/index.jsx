@@ -4,6 +4,7 @@
 var React = require( 'react' ),
 	url = require( 'url' ),
 	qs = require( 'querystring' );
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -16,7 +17,8 @@ module.exports = React.createClass( {
 	propTypes: {
 		user: React.PropTypes.object,
 		size: React.PropTypes.number,
-		imgSize: React.PropTypes.number
+		imgSize: React.PropTypes.number,
+		className: React.PropTypes.string
 	},
 
 	getDefaultProps: function() {
@@ -56,18 +58,22 @@ module.exports = React.createClass( {
 
 	render: function() {
 		const size = this.props.size;
+		const classes = classnames( 'gravatar', this.props.className, {
+			'is-placeholder': ! this.props.user,
+			'is-missing': this.state.failedToLoad
+		} );
 
 		if ( ! this.props.user ) {
-			return <span className="gravatar is-placeholder" style={ { width: size, height: size } } />;
+			return <span className={ classes } style={ { width: size, height: size } } />;
 		} else if ( this.state.failedToLoad ) {
-			return <span className="gravatar is-missing" />;
+			return <span className={ classes } />;
 		}
 
 		const alt = this.props.alt || this.props.user.display_name;
 		const avatarURL = this._getResizedImageURL( safeImageURL( this.props.user.avatar_URL ) );
 
 		return (
-			<img alt={ alt } className="gravatar" src={ avatarURL } width={ size } height={ size } onError={ this.onError } />
+			<img alt={ alt } className={ classes } src={ avatarURL } width={ size } height={ size } onError={ this.onError } />
 		);
 	}
 
