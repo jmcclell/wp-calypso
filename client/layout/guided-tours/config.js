@@ -147,22 +147,35 @@ function get( tour ) {
 					return params && params.search && params.search.length && ! isFetchingNextPage( state ) && getThemesList( state ).length > 0;
 				},
 				arrow: 'top-left',
-				next: 'mobileFilter',
+				next: 'mobileCloseSearch',
 			},
-			mobileFilter: {
+			mobileCloseSearch: {
 				text: i18n.translate( 'Close the search' ),
 				type: 'ActionStep',
 				target: '.themes__search-card .search-close__icon',
 				placement: 'below',
 				showInContext: () => isMobile(),
 				arrow: 'top-left',
-				next: 'filter',
+				next: 'mobileFilter',
 			},
 			filter: {
 				text: i18n.translate( 'You can filter between free & paid themes. Try filtering by free themes' ),
 				type: 'ActionStep',
 				target: 'themes-tier-dropdown',
 				placement: 'below',
+				continueIf: state => {
+					const params = getQueryParams( state );
+					return params && params.tier === 'free';
+				},
+				arrow: 'top-right',
+				next: 'choose-theme',
+			},
+			mobileFilter: {
+				text: i18n.translate( 'You can filter between free & paid themes. Try filtering by free themes' ),
+				type: 'ActionStep',
+				target: '.themes__search-card .section-nav__mobile-header',
+				placement: 'below',
+				showInContext: () => isMobile(),
 				continueIf: state => {
 					const params = getQueryParams( state );
 					return params && params.tier === 'free';

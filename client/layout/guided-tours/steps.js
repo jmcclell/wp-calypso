@@ -132,6 +132,7 @@ class ActionStep extends Component {
 		if ( ! continueIf && onNext && target && target.addEventListener ) {
 			console.log( 'attaching click target to', target );
 			target.addEventListener( 'click', onNext );
+			target.addEventListener( 'touchstart', onNext );
 		}
 	}
 
@@ -141,6 +142,7 @@ class ActionStep extends Component {
 
 		if ( ! continueIf && onNext && target && target.removeEventListener ) {
 			target.removeEventListener( 'click', onNext );
+			target.removeEventListener( 'touchstart', onNext );
 		}
 	}
 
