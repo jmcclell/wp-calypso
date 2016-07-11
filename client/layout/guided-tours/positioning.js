@@ -87,7 +87,7 @@ export function getValidatedArrowPosition( { targetSlug, arrow, stepPos } ) {
 		return 'top-left';
 	}
 
-	return arrow;
+	return arrow || 'none';
 }
 
 export function getStepPosition( { placement = 'center', targetSlug } ) {
